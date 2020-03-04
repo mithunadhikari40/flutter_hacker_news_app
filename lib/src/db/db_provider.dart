@@ -16,8 +16,8 @@ class DbProvider {
     db = await openDatabase(path, version: 1,
         onCreate: (Database database, int verion) {
       Batch batch = database.batch();
-      batch.execute4("""
-      CREATE TABLE Items(
+      batch.execute("""
+      CREATE TABLE $TABLE_NAME(
         id INTEGER PRIMARY KEY,
         by TEXT,
         descendants INTEGER,
