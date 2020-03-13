@@ -5,7 +5,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'dart:io';
 
-class DbProvider {
+import 'sources.dart';
+
+class DbProvider extends Sources {
   Database db;
   DbProvider() {
     init();
@@ -37,17 +39,27 @@ class DbProvider {
     });
   }
 
+  @override
   insertItem(ItemModel itemModel) {
     return db.insert(TABLE_NAME, itemModel.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace);
     // insert into Items() values()
   }
 
-  fetchItem(int id) async {
-    // select * from Item Where id = :id
-    final data = await db.query(TABLE_NAME,
-        columns: ['*'], where: "id = ?", whereArgs: [id]);
+  @override
+  Future<ItemModel> fetchItem(int id) async {
+    final data = await db.query(
+      TABLE_NAME,
+      columns: ['*'],
+      where: "id = ?",
+      whereArgs: [id],
+    );
 
-    return (data != null) ? ItemModel.fromDb(data.first) : null;
+    return data.length > 0 ? ItemModel.fromDb(data.first) : null;
+  }
+
+  @override
+  Future<List<int>> fetchTopIds() {
+    return null;
   }
 }

@@ -1,19 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:news_apps_flutter/src/blocs/news_bloc_provider.dart';
+import 'package:news_apps_flutter/src/blocs/news_bloc.dart';
+import 'package:news_apps_flutter/src/widgets/news_item.dart';
 
 class NewsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final bloc = NewsBlocProvider.of(context);
+    //bad approach
+    //todo remove this when possible
+    bloc.fetchTopIds();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Latest News"),
       ),
-      body: _buildNewsList(context),
+      body: _buildNewsList(context, bloc),
     );
   }
 
-  Widget _buildNewsList(BuildContext context) {
-    return Center(
-      child: Text("we show list of news here"),
+  Widget _buildNewsList(BuildContext context, NewsBloc bloc) {
+    return StreamBuilder(
+      stream: bloc.topIds,
+      builder: (BuildContext context, AsyncSnapshot<List<int>> snapshot) {
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return ListView.builder(
+          itemCount: snapshot.data.length,
+          itemBuilder: (BuildContext context, int index) {
+            bloc.itemId(snapshot.data[index]);
+            return NewsItem(id:snapshot.data[index]);
+          },
+        );
+      },
     );
   }
 }

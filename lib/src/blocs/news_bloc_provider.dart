@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:news_apps_flutter/src/blocs/news_block.dart';
+import 'package:news_apps_flutter/src/blocs/news_bloc.dart';
 
 class NewsBlocProvider extends InheritedWidget {
-  final _bloc = NewsBlock();
+  final _bloc = NewsBloc();
 
-  static NewsBlock of(BuildContext context) {
+  static NewsBloc of(BuildContext context) {
     return (context
         .dependOnInheritedWidgetOfExactType<NewsBlocProvider>()
         ._bloc);

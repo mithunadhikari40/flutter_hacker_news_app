@@ -7,20 +7,19 @@ import 'package:news_apps_flutter/src/models/items_model.dart';
 class ApiProvider extends Sources {
   Client client = Client();
   @override
-  fetchTopIds() async {
+  Future<List<int>> fetchTopIds() async {
     final response = await client.get("$BASE_URL/topstories.json");
-    return jsonDecode(response.body); // return ids;
-  }
-
-  @override
-  fetchItem(int id) async {
-    final response = await client.get("$BASE_URL/item/$id.json");
-    return ItemModel.fromJson(jsonDecode(response.body));
+    return jsonDecode(response.body).cast<int>();  
   }
 
   @override
   Future<int> insertItem(ItemModel item) {
-    // TODO: implement insertItem
     return null;
+  }
+
+  @override
+  Future<ItemModel> fetchItem(int id) async {
+    final response = await client.get("$BASE_URL/item/$id.json");
+    return ItemModel.fromJson(jsonDecode(response.body));
   }
 }
