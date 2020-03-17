@@ -7,10 +7,6 @@ class NewsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = NewsBlocProvider.of(context);
-    //bad approach
-    //todo remove this when possible
-    bloc.fetchTopIds();
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Latest News"),
@@ -28,12 +24,18 @@ class NewsScreen extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
-        return ListView.builder(
-          itemCount: snapshot.data.length,
-          itemBuilder: (BuildContext context, int index) {
-            bloc.itemId(snapshot.data[index]);
-            return NewsItem(id:snapshot.data[index]);
+        return RefreshIndicator(
+          onRefresh: () async{
+           await bloc.clearData();
+           await bloc.fetchTopIds();
           },
+          child: ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (BuildContext context, int index) {
+              bloc.itemId(snapshot.data[index]);
+              return NewsItem(id: snapshot.data[index]);
+            },
+          ),
         );
       },
     );

@@ -4,7 +4,7 @@ import 'package:news_apps_flutter/src/core/constants.dart';
 import 'package:news_apps_flutter/src/db/sources.dart';
 import 'package:news_apps_flutter/src/models/items_model.dart';
 
-class ApiProvider extends Sources {
+class ApiProvider implements Sources {
   Client client = Client();
   @override
   Future<List<int>> fetchTopIds() async {
@@ -12,10 +12,6 @@ class ApiProvider extends Sources {
     return jsonDecode(response.body).cast<int>();  
   }
 
-  @override
-  Future<int> insertItem(ItemModel item) {
-    return null;
-  }
 
   @override
   Future<ItemModel> fetchItem(int id) async {

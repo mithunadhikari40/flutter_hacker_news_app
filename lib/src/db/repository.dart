@@ -4,19 +4,15 @@ import 'package:news_apps_flutter/src/db/sources.dart';
 import 'package:news_apps_flutter/src/models/items_model.dart';
 
 class Repository {
-  List<Sources> sources = [DbProvider(), ApiProvider()];
+  List<Sources> sources = [dbProvider, ApiProvider()];
+  List<Cache> caches = [dbProvider];
 
-  /*
-  final dbProvider = DbProvider();
-  final apiProvider = ApiProvider();
-  */
-
-Future<List<int>>  fetchTopIds() async {
+  Future<List<int>> fetchTopIds() async {
     return await sources[1].fetchTopIds();
   }
 
- Future<ItemModel> fetchItem(int id) async {
-    var source;
+  Future<ItemModel> fetchItem(int id) async {
+    Sources source;
     ItemModel item;
     for (source in sources) {
       item = await source.fetchItem(id);
@@ -25,11 +21,17 @@ Future<List<int>>  fetchTopIds() async {
       }
     }
 
-    for (var origin in sources) {
-      if (source != origin) {
+    for (var origin in caches) {
+      if (source != origin as Sources) {
         origin.insertItem(item);
       }
     }
-     return item;
+    return item;
+  }
+
+  clearData() async {
+    for (var c in caches) {
+      c.clearData();
+    }
   }
 }
