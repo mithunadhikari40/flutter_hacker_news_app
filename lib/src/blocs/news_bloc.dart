@@ -33,8 +33,7 @@ class NewsBloc {
     return ScanStreamTransformer(
       (Map<int, Future<ItemModel>> cache, int id, index) {
         cache[id] = _repository.fetchItem(id);
-        print("transformer is called $index times");
-        return cache;
+         return cache;
       },
       <int, Future<ItemModel>>{},
     );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:news_apps_flutter/src/blocs/comment_bloc.dart';
-import 'package:news_apps_flutter/src/blocs/comment_bloc_provider.dart';
+ import 'package:news_apps_flutter/src/blocs/comment_bloc_provider.dart';
 import 'package:news_apps_flutter/src/blocs/news_bloc_provider.dart';
 import 'package:news_apps_flutter/src/core/route_paths.dart';
 import 'package:news_apps_flutter/src/screens/news_detail_screen.dart';
@@ -27,7 +26,7 @@ class Router {
             builder: (BuildContext context) {
               final bloc = CommentBlocProvider.of(context);
               bloc.commentFetcher(newsId);
-print("The id we get $newsId");
+              print("The id we get $newsId");
 
               return NewsDetail(newsId);
             },

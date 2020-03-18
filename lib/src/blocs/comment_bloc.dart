@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 
 class CommentBloc {
   final _repository = Repository();
-  BehaviorSubject<int> _commentFetcher = BehaviorSubject<int>();
+  PublishSubject<int> _commentFetcher = PublishSubject<int>();
   BehaviorSubject<Map<int, Future<ItemModel>>> _commentOutput =
       BehaviorSubject<Map<int, Future<ItemModel>>>();
 
@@ -22,12 +22,12 @@ class CommentBloc {
   _commentTransform() {
     return ScanStreamTransformer<int, Map<int, Future<ItemModel>>>(
         (Map<int, Future<ItemModel>> cache, int id, int index) {
-         print("Index $index");
+         print("Index $index and id $id");
       cache[id] = _repository.fetchItem(id);
 
       cache[id].then((ItemModel item) {
-        item.kids?.forEach((kidId) {
-          commentFetcher(id);
+         item.kids?.forEach((kidId) {
+          commentFetcher(kidId);
         });
       });
 
