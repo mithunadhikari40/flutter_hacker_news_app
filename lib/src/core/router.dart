@@ -19,14 +19,13 @@ class Router {
             },
           );
         }
-      case NEWS_DETAIL:
-        {
+      case NEWS_DETAIL:{
           int newsId = routeSettings.arguments as int;
           return MaterialPageRoute(
             builder: (BuildContext context) {
               final bloc = CommentBlocProvider.of(context);
               bloc.commentFetcher(newsId);
-              print("The id we get $newsId");
+               
 
               return NewsDetail(newsId);
             },

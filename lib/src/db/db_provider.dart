@@ -48,6 +48,7 @@ class _DbProvider implements Sources, Cache {
 
   @override
   Future<ItemModel> fetchItem(int id) async {
+    
     final data = await db.query(
       TABLE_NAME,
       columns: ['*'],
